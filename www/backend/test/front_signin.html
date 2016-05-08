@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>test</title>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+        <script>
+		function validateEmail(email) 
+		{
+			var re = /\S+@\S+\.\S+/;
+			return re.test(email);
+		}			
+		function calculator(){
+			
+    		var bday = new Date(document.getElementById("bday").value);
+			var name = document.getElementById("name").value;
+			var pw = document.getElementById("password").value;
+			var email = document.getElementById("email").value;
+			if (!validateEmail(email)){
+				alert("Please make sure your email format !");
+				return;
+			}
+			var cm = document.getElementById("height").value*12*2.54;
+			var kg = document.getElementById("weight").value/2.2;
+			var cur = new Date().getTime();
+			
+			var age =  (cur-bday)/ (31557600000);
+			var cal = 0;
+			var gender = "male";
+			
+			if(document.getElementById("Gender_female").checked){
+				alert("Your are wowan");
+				gender = "female";
+				cal = 665.09+(9.56*kg)+(1.84*cm)-(4.67*age);
+				
+			}else{
+				alert("You are man");
+				cal = 66.47+(13.75*kg)+(5*cm)-(6.75*age);
+				
+			}
+			
+			document.getElementById("cal_info").innerHTML = cal.toFixed(2);
+			
+			
+			
+			$.ajax({
+                        url: "http://websys3.stern.nyu.edu:7004/signup/",
+                        type: "POST",
+						
+                        data :{ name: name , password: pw ,email: email, bday: bday.getTime()/1000, age: age , gender: gender, weight: kg, height: cm , calories:cal.toFixed(2) },
+						crossDomain: true,
+                        success: function(response){
+							alert ("GOOD");
+							alert(response['error']);
+							if (response['error'] != null){
+								 alert("This user already exist !");
+							}
+							alert(response['name']);
+		
+							
+                        }
+                    });
+			
+			
+		}
+		
+        </script>
+</head>
+
+<body>
+
+	<p>
+    UserName :
+    <input id="name" type="text"  />
+    
+    </p>
+    
+    <p>
+    Password :
+    <input id="password" type="password"  />
+    
+    </p>
+	<p>
+    Email :
+    <input id="email" type="text"  />
+    
+    </p>
+
+  <p>
+  Birthday:
+  <input type="date" id="bday">
+  </p>
+  <p>
+  Gender :
+  
+    
+      <label>
+        <input type="radio" name="Gender" value="1" id="Gender_male" checked />
+        Male</label>
+      
+      <label>
+        <input type="radio" name="Gender" id="Gender_female" value="0"  />
+        Female</label>
+      
+    </p>
+    <p>
+    Weight :
+    <input id="weight" type="text" value="0" />
+    (lb.)
+    </p>
+    
+    <p>
+     Height :
+    <input id="height" type="text" value="0" />   
+    (feet)</p>
+  
+<input type="image" src="img/Submit-Button-300x225.png" width="40" height="30" value="submit" onclick="calculator()"/>
+<p>
+The Recommend Calories for you is :
+<div id = "cal_info" ></div>
+</p>
+
+
+</html>

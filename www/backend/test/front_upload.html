@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>test</title>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+        <script>
+		function myFunction() {
+			alert("GO here");
+    		var img_val = document.getElementById("Image_string").value;
+			alert(img_val);
+			getInfo(img_val);
+			;
+			
+		}
+        function getInfo(img_url){
+					alert('{image: "'+img_url +'"}')
+					
+                    $.ajax({
+                        url: "http://websys3.stern.nyu.edu:7004/upload/",
+                        type: "POST",
+						
+                        data :{ image: img_url , name: "image_name"},
+						crossDomain: true,
+                        success: function(response){
+							alert ("GOOD");
+							
+							document.getElementById("getInfo").innerHTML = response['name'];
+							document.getElementById("calories").innerHTML = response['calories'];
+		
+							
+                        }
+                    });
+                
+            };
+			
+		
+        </script>
+</head>
+
+<body>
+
+<textarea id="Image_string" cols="" rows="" value="Image base64 String"></textarea>
+<input type="image" src="img/Submit-Button-300x225.png" width="40" height="30" value="submit" onclick="myFunction()"/>
+
+
+</html>

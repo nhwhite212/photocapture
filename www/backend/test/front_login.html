@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>test</title>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+        <script>
+			
+		function login(){
+			
+    		
+			var pw = document.getElementById("password").value;
+			var email = document.getElementById("name").value;
+			
+			
+			$.ajax({
+                        url: "http://websys3.stern.nyu.edu:7004/login/",
+                        type: "POST",
+						
+                        data :{ password: pw ,email: email },
+						crossDomain: true,
+                        success: function(response){
+							alert ("GOOD");
+							
+							if (response['error'] != null){
+								 alert("Please check your email / password !");
+								 return;
+							}
+							alert("Hello" + response['name']);
+		
+							
+                        }
+                    });
+			
+			
+		}
+		
+        </script>
+</head>
+
+<body>
+
+	<p>
+    Email :
+    <input id="name" type="text"  />
+    
+    </p>
+    
+    <p>
+    Password :
+    <input id="password" type="password"  />
+    
+    </p>
+	<input type="image" src="img/Submit-Button-300x225.png" width="40" height="30" value="submit" onclick="login()"/>
+
+
+</html>

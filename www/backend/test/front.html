@@ -1,0 +1,161 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>test</title>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+        <script>
+		function myFunction() {
+			alert("GO here");
+    		var img_val = document.getElementById("Image_url").value;
+			alert(img_val);
+			getInfo(img_val);
+			
+		}
+        function getInfo(img_url){
+					alert('{image: "'+img_url +'"}')
+                    $.ajax({
+                        url: "http://websys3.stern.nyu.edu:7004/get/",
+                        type: "POST",
+						
+                        data :{ image: img_url , art: 'abc'},
+						crossDomain: true,
+                        success: function(response){
+							alert ("GOOD");
+							
+							document.getElementById("getInfo").innerHTML = response['name'];
+		
+							
+                        }
+                    });
+                
+            };
+			
+		function calculator(){
+			
+    		var bday = new Date(document.getElementById("bday").value);
+			var name = new Date(document.getElementById("name").value);
+			var pw = new Date(document.getElementById("password").value);
+			var email = new Date(document.getElementById("email").value);
+			alert(bday);
+			var cm = document.getElementById("height").value*12*2.54;
+			var kg = document.getElementById("weight").value/2.2;
+			var cur = new Date().getTime();
+			alert(cur);
+			var age =  (cur-bday)/ (31557600000);
+			var cal = 0;
+			var gender = "male";
+			alert(age);
+			alert(cm);
+			alert(kg);
+			if(document.getElementById("Gender_female").checked){
+				alert("Your are wowan");
+				gender = "female";
+				cal = 665.09+(9.56*kg)+(1.84*cm)-(4.67*age);
+				
+			}else{
+				alert("You are man");
+				cal = 66.47+(13.75*kg)+(5*cm)-(6.75*age);
+				
+			}
+			
+			document.getElementById("cal_info").innerHTML = cal.toFixed(2);
+			
+			$.ajax({
+                        url: "http://websys3.stern.nyu.edu:7004/signup/",
+                        type: "POST",
+						
+                        data :{ name: name , password: pw ,email: email, bday: bday, age: age , gender: gender, weight: kg, height: cm , calories:cal.toFixed(2) },
+						crossDomain: true,
+                        success: function(response){
+							alert ("GOOD");
+							alert(response);
+		
+							
+                        }
+                    });
+			
+			
+		}
+		function ima_upload(){
+			$('#fileupload').fileupload({
+        		url: "http://websys3.stern.nyu.edu:7004/upload/",
+        		dataType: 'json',
+        		add: function(e, data) {
+            		data.submit();
+        		},
+        		success: function(response, status) {
+            		console.log(response);
+        		},
+        		error: function(error) {
+            		console.log(error);
+        		}
+    		});
+		}
+        </script>
+</head>
+
+<body>
+<input id="Image_url" type="text" value="Image url" />
+
+<input type="image" src="img/Submit-Button-300x225.png" width="40" height="30" value="submit" onclick="myFunction()"/>
+<p>
+The Food is :
+<div id = "getInfo" ></div>
+</p>
+	<p>
+    UserName :
+    <input id="name" type="text"  />
+    
+    </p>
+    
+    <p>
+    Password :
+    <input id="password" type="text"  />
+    
+    </p>
+	<p>
+    Email :
+    <input id="email" type="text"  />
+    
+    </p>
+
+  <p>
+  Birthday:
+  <input type="date" id="bday">
+  </p>
+  <p>
+  Gender :
+  
+    
+      <label>
+        <input type="radio" name="Gender" value="1" id="Gender_male" checked />
+        Male</label>
+      
+      <label>
+        <input type="radio" name="Gender" id="Gender_female" value="0"  />
+        Female</label>
+      
+    </p>
+    <p>
+    Weight :
+    <input id="weight" type="text" value="0" />
+    (lb.)
+    </p>
+    
+    <p>
+     Height :
+    <input id="height" type="text" value="0" />   
+    (feet)</p>
+  
+<input type="image" src="img/Submit-Button-300x225.png" width="40" height="30" value="submit" onclick="calculator()"/>
+<p>
+The Recommend Calories for you is :
+<div id = "cal_info" ></div>
+</p>
+
+<p>
+Image Upload :
+<input type="file" id="fileupload" name="file" multiple>
+</p>
+</html>
